@@ -5,6 +5,7 @@ import requests
 from requests.exceptions import RequestException
 from fastapi import FastAPI
 from fastapi.responses import Response, JSONResponse
+from fastapi.exceptions import HTTPException
 from pydantic import BaseModel
 
 
@@ -43,7 +44,7 @@ def send(
     try:
         response.raise_for_status()
     except RequestException as e:
-        return Response(str(e))
+        raise HTTPException(str(e), status_code=405)
 
     return Response(str(response.text))
 
